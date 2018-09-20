@@ -125,6 +125,11 @@ $(function () {
                 + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':'
                 + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes())
                 + ': ' + '<audio controls src="' + message.url + '" /></p>');
+        } else if (message.type === 'speech') {
+            content.prepend('<p><span style="color:' + color + '">' + author + '</span> @ ' +
+                + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':'
+                + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes())
+                + ': SPEECH: ' + message.text + '</p>');
         } else {
             console.log('Hmm..., I\'ve never seen message like this: ', message);
         }

@@ -122,6 +122,9 @@ wsServer.on('request', function(request) {
                 } else if (messageData.type === "audio") {
                     obj.url = messageData.url;
                     obj.type = 'audio';
+                } else if (messageData.type === "speech") {
+                    obj.text = messageData.text;
+                    obj.type = 'speech';
                 } else {
                     obj.text = htmlEntities(messageData.text);
                     obj.type = 'text';
