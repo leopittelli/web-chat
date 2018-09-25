@@ -35,15 +35,25 @@
             </div>
         </section>
 
+        <video id="pip-video" src="https://cdn.arnellebalane.com/videos/original-video.mp4" controls></video>
+        <button id="pip-button">Enter picture in picture</button>
+
+
         <video id="video" autoplay></video>
         <button id="getmediabutton">Get Media</button>
         <button id="startbutton" disabled="disabled">Take photo</button>
         <canvas id="canvas"></canvas>
 
+        <img hidden crossorigin="" id="image-shape" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Google_team_group_photo_with_Vanhanen.jpg/640px-Google_team_group_photo_with_Vanhanen.jpg" alt="">
+        <canvas id="canvas-shape" width="640" height="480"></canvas>
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="/public/chat-frontend.js"></script>
+        <script src="/public/messages.js"></script>
         <script src="/public/capture-image.js"></script>
         <script src="/public/capture-audio.js"></script>
         <script src="/public/speech-recognition.js"></script>
+        <script src="/public/shape-detection.js"></script>
+        <script src="/public/pip.js"></script>
     </body>
 </html>
