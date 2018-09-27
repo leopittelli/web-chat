@@ -27,7 +27,6 @@
         <select name="" id="voice-select"></select>
 
         <video id="canvas-video" width="640" height="480"></video>
-        <canvas id="canvas-wasm" width="640" height="480"></canvas>
 
         <button class="speech-recognition">speech</button>
 
@@ -66,6 +65,6 @@
         <!-- emcc filter.c -s "EXPORTED_FUNCTIONS=['_outline_c']" -s WASM=1 -o wasm-filter.js -->
         <script src="/public/wasm-filter.js"></script>
 
-        <script src="/public/wasm-example.js"></script>
+        <!--<script src="/public/wasm-example.js"></script>-->
     </body>
 </html>

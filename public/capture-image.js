@@ -23,7 +23,22 @@
         canvas.getContext('2d').drawImage(video, 0, 0, width, height);
         canvas.toBlob(function(blob) {
             const form = new FormData();
-            form.append('image', blob, 'newPhoto.png');
+
+            var numBytes = width * height * 4;
+            var ptr= Module.getMemory(numBytes);
+            var heapBytes= new Uint8Array(Module.HEAPU8.buffer, ptr, numBytes);
+
+            var ptrOut= Module.getMemory(numBytes);
+            var heapBytesOut= new Uint8Array(Module.HEAPU8.buffer, ptrOut, numBytes);
+
+            // copy data into heapBytes
+            heapBytes.set(new Uint8Array(blob.data));
+
+            Module._outline_c(heapBytes.byteOffset, heapBytesOut, width, height);
+            form.append('image', new Blob(heapBytesOut), 'newPhoto.png');
+
+            Module.memory(heapBytes.byteOffset);
+            Module._free(heapBytesOut.byteOffset);
 
             fetch('/images', {
                 method: 'POST',
