@@ -41,6 +41,8 @@ colors.sort(function(a,b) { return Math.random() > 0.5; } );
  * HTTP server
  */
 app.use('/public', express.static(path.join(__dirname, 'public')));
+express.static.mime.define({'application/wasm': ['wasm']});
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/', function (req, res) {

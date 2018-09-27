@@ -24,6 +24,11 @@
             <input type="text" id="input" disabled="disabled" />
         </div>
 
+        <select name="" id="voice-select"></select>
+
+        <video id="canvas-video" width="640" height="480"></video>
+        <canvas id="canvas-wasm" width="640" height="480"></canvas>
+
         <button class="speech-recognition">speech</button>
 
         <section class="main-controls">
@@ -53,7 +58,14 @@
         <script src="/public/capture-image.js"></script>
         <script src="/public/capture-audio.js"></script>
         <script src="/public/speech-recognition.js"></script>
+        <script src="/public/speech-synthesis.js"></script>
         <script src="/public/shape-detection.js"></script>
         <script src="/public/pip.js"></script>
+
+        <!-- source ./emsdk_env.sh --build=Release -->
+        <!-- emcc filter.c -s "EXPORTED_FUNCTIONS=['_outline_c']" -s WASM=1 -o wasm-filter.js -->
+        <script src="/public/wasm-filter.js"></script>
+
+        <script src="/public/wasm-example.js"></script>
     </body>
 </html>

@@ -114,7 +114,7 @@ $(function () {
             content.prepend('<p><span style="color:' + color + '">' + author + '</span> @ ' +
                 + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':'
                 + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes())
-                + ': ' + message.text + '</p>');
+                + ': ' + message.text + ' <button onclick="synthesis.speak(\''+message.text+'\')">LEER</button></p>');
         } else if (message.type === 'image') {
             content.prepend('<p><span style="color:' + color + '">' + author + '</span> @ ' +
                 + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':'
@@ -129,7 +129,7 @@ $(function () {
             content.prepend('<p><span style="color:' + color + '">' + author + '</span> @ ' +
                 + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':'
                 + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes())
-                + ': SPEECH: ' + message.text + '</p>');
+                + ': SPEECH: ' + message.text + ' <button onclick="synthesis.speak(\''+message.text+'\')">LEER</button></p>');
         } else {
             console.log('Hmm..., I\'ve never seen message like this: ', message);
         }
