@@ -103,7 +103,7 @@ wsServer.on('request', function(request) {
                 userName = htmlEntities(messageData.text);
                 // get random color and send it back to the user
                 userColor = colors.shift();
-                connection.sendUTF(JSON.stringify({ type:'color', data: { userColor, userName } }));
+                connection.sendUTF(JSON.stringify({ type:'color', data: { color: userColor, text: userName, author: userName } }));
                 console.log((new Date()) + ' User is known as: ' + userName
                             + ' with ' + userColor + ' color.');
 

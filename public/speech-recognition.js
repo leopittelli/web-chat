@@ -2,26 +2,24 @@
 
     window.SpeechRecognition = window.SpeechRecognition ||
         window.webkitSpeechRecognition;
-    var recognition = new SpeechRecognition();
+    const recognition = new SpeechRecognition();
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = 'es-AR';
 
     recognition.onresult = function (event) {
-        var results = event.results;
-        // results is an array of SpeechRecognitionResults
-        // each of which is an array of SpeechRecognitionAlternatives
-        // in this demo, we only use the first alternative
-        var interimTranscript = '';
-        for (var i = event.resultIndex; i !== results.length; ++i) {
-            var result = results[i];
-            // once speaking/recognition stops, a SpeechRecognitionEvent
-            // is fired with a single result, for which isFinal is true
+        const results = event.results;
+        // results es un array de SpeechRecognitionResults
+        // cada uno es un array de SpeechRecognitionAlternatives
+        let interimTranscript = '';
+        for (let i = event.resultIndex; i !== results.length; ++i) {
+            let result = results[i];
+            // cuando el reconocimiento termina, se dispara un evento SpeechRecognitionEvent
+            // con un un resultado para el cual isFinal es true
             if (result.isFinal) {
-                console.log('Final transcript: ' + results[0][0].transcript);
-                connection.send(JSON.stringify({ type: "speech", text: results[0][0].transcript}));
+                chat.send({ type: "speech", text: results[0][0].transcript});
                 recognition.stop();
-                startButton.innerHTML = "speech";
+                startButton.classList.remove("animated");
             } else {
                 interimTranscript += result[0].transcript;
                 console.log('Interim transcript: ' + interimTranscript);
@@ -31,7 +29,6 @@
 
     recognition.onend = function () {
         started = false;
-        console.log('Recognition ended.');
     };
 
     recognition.onerror = function (event) {
@@ -39,13 +36,13 @@
         console.log('Error: ' + event.error);
     };
 
-    var startButton = document.querySelector('.speech-recognition');
+    const startButton = document.querySelector('#send-audio');
     let started = false;
     startButton.onclick = function () {
         if (started) recognition.stop();
         else recognition.start();
         started = !started;
-        startButton.innerHTML = "grabando";
+        startButton.classList.add("animated");
     };
 
 })();

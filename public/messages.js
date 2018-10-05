@@ -1,5 +1,5 @@
 
-var messages = (function(connection) {
+var messages = (function() {
 
     if (!('indexedDB' in window)) {
         console.log('This browser doesn\'t support IndexedDB');
@@ -48,7 +48,7 @@ var messages = (function(connection) {
         objectStore.openCursor().onsuccess = function(event) {
             var cursor = event.target.result;
             if (cursor) {
-                connection.send(JSON.stringify(cursor.value));
+                chat.send({type: "text", text: cursor.value, author: "database"});
                 var request = cursor.delete();
                 request.onsuccess = function() {
                     cursor.continue();
@@ -64,4 +64,4 @@ var messages = (function(connection) {
         add,
         send
     }
-})(connection);
+})();

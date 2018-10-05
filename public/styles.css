@@ -135,14 +135,13 @@ body {
     height: 64px;
     background: #ffffff;
     border: none;
-    width: calc(100% - 64px);
+    width: 100%;
     position: absolute;
     left: 0;
     top: 0;
-    padding: 0 5%;
+    padding: 24px 64px 0 5%;
     resize: none;
-    overflow: scroll;
-    padding-top: 24px;
+    overflow: scroll;;
     font-weight: 300;
     -ms-overflow-style: none;
     overflow: -moz-scrollbars-none;
@@ -164,9 +163,20 @@ body {
     bottom: 11px;
     right: 11px;
 }
+.bottom .send:focus {
+    outline: none;
+}
+.bottom .send:hover {
+    cursor: pointer;
+}
+.bottom #send-audio {
+    bottom: 80px;
+}
+.bottom #send-audio.animated {
+    box-shadow: 0px 0px 4px 4px #ccc;
+}
 .bottom .send:before {
     content: '';
-    background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/104946/ic_send_white_48dp.png) no-repeat center center;
     background-size: 26px;
     position: absolute;
     top: 0;
@@ -174,11 +184,11 @@ body {
     right: 0;
     bottom: 0;
 }
-.bottom .send:focus {
-    outline: none;
+.bottom #send:before {
+background: url(/public/icons/send.svg) no-repeat center center;
 }
-.bottom .send:hover {
-    cursor: pointer;
+.bottom #send-audio:before {
+    background: url(/public/icons/mic.svg) no-repeat center center;
 }
 
 .message-wrapper {
@@ -213,18 +223,6 @@ body {
     width: 0;
     height: 0;
     border-style: solid;
-}
-.message-wrapper.admin .circle-wrapper, .message-wrapper.admin .text-wrapper {
-    background: #F44336;
-    float: left;
-    color: #ffffff;
-}
-.message-wrapper.admin .text-wrapper:before {
-    border-width: 0 10px 10px 0;
-    border-color: transparent #F44336 transparent transparent;
-    position: absolute;
-    top: 0;
-    left: -9px;
 }
 .message-wrapper.them .circle-wrapper, .message-wrapper.them .text-wrapper {
     background: #F44336;
@@ -276,6 +274,10 @@ body {
     animation-duration: 1s;
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
+}
+.animated.infinite {
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
 }
 
 @-webkit-keyframes fadeIn {
@@ -400,4 +402,45 @@ body {
     animation-duration: 0.75s;
     -webkit-animation-name: bounceIn;
     animation-name: bounceIn;
+}
+
+@-webkit-keyframes pulse {
+    from {
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+
+    50% {
+        -webkit-transform: scale3d(1.05, 1.05, 1.05);
+        transform: scale3d(1.05, 1.05, 1.05);
+    }
+
+    to {
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+@keyframes pulse {
+    from {
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+
+    50% {
+        -webkit-transform: scale3d(1.05, 1.05, 1.05);
+        transform: scale3d(1.05, 1.05, 1.05);
+    }
+
+    to {
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+.pulse {
+    -webkit-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+    -webkit-animation-name: pulse;
+    animation-name: pulse;
 }

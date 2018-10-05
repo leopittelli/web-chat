@@ -10,20 +10,17 @@ const chat = (function () {
         inner[0].scrollTop = $(content).outerHeight(true);
     }
 
-    function onRecieve(message, who="them") {
-        content.append(buildHTML(message, who));
-
-        scrollBottom();
-    }
-    function onSend(message) {
-        console.log(message)
-        content.append(buildHTML(message, "me"));
+    function onRecieve(message) {
+        content.append(buildHTML(message));
 
         scrollBottom();
     }
 
-    function buildHTML(message, who) {
-        return `<div class="${'message-wrapper ' + who}">
+    function buildHTML(message) {
+        const authorClass = message.author === myName ? "me" : "them";
+        const colorClass = message.color || 'admin';
+
+        return `<div class="${'message-wrapper ' + authorClass + ' ' + colorClass }">
             <div class="circle-wrapper animated bounceIn">A</div>
             <div class="text-wrapper animated fadeIn">${ message.text }</div>
         </div>`;
@@ -34,16 +31,13 @@ const chat = (function () {
             message.time = new Date().getTime();
 
             connection.send(JSON.stringify(message));
-            if (myName) {
-                onSend(message);
-            } else {
+            if (!myName) {
                 myName = message.text;
             }
         }
     }
 
     function receive(message) {
-        console.log(message)
         if (validate(message.text)) {
             onRecieve(message);
         }
@@ -83,22 +77,21 @@ const chat = (function () {
         window.WebSocket = window.WebSocket || window.MozWebSocket;
 
         if (!window.WebSocket) {
-            onRecieve({type: "text", text: "Este navegador no soporta web sockets"}, "admin");
+            onRecieve({type: "text", text: "Este navegador no soporta web sockets", author: "admin"});
             return;
         }
 
         connection = new WebSocket('ws://127.0.0.1:1337');
 
         connection.onopen = function () {
-            onRecieve({type: "text", text: 'Escribe tu nombre:'}, "admin");
+            onRecieve({type: "text", text: 'Escribe tu nombre:', author: "admin"});
         };
 
         connection.onerror = function (error) {
-            onRecieve({type: "text", text: 'Error de conexión'}, "admin");
+            onRecieve({type: "text", text: 'Error de conexión', author: "admin"});
         };
 
         connection.onmessage = function (message) {
-
             let json;
             try {
                 json = JSON.parse(message.data);
@@ -121,7 +114,7 @@ const chat = (function () {
         let conectionError = false;
         setInterval(function() {
             if (connection.readyState !== 1) {
-                if (!conectionError) onRecieve({type: "text", text: 'Error de conexión'}, "admin");
+                if (!conectionError) onRecieve({type: "text", text: 'Error de conexión', author: "admin"});
                 conectionError = true;
             } else {
                 conectionError = false;
