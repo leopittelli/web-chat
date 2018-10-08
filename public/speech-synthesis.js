@@ -1,16 +1,15 @@
+const synthesis = (function() {
 
-var synthesis = (function() {
+    const synth = window.speechSynthesis;
+    const voiceSelect = document.querySelector('#voice-select');
 
-    var synth = window.speechSynthesis;
-    var voiceSelect = document.querySelector('#voice-select');
-
-    var voices = [];
+    let voices = [];
 
     function populateVoiceList() {
         voices = synth.getVoices().filter(v => v.lang.startsWith('es'));
 
-        for(i = 0; i < voices.length ; i++) {
-            var option = document.createElement('option');
+        for(let i = 0; i < voices.length ; i++) {
+            let option = document.createElement('option');
             option.textContent = voices[i].name + ' (' + voices[i].lang + ')';
 
             if(voices[i].default) {
@@ -33,11 +32,11 @@ var synthesis = (function() {
 
     function speak(text) {
         const utterThis = new SpeechSynthesisUtterance(text);
-        utterThis.voice = voices[voiceSelect.value];
+        // utterThis.voice = voices[voiceSelect.value];
         synth.speak(utterThis);
     }
 
-    init();
+    // init();
 
     return {
         speak

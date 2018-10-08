@@ -19,7 +19,7 @@ const chat = (function () {
     function buildMessageHTML(message) {
         switch (message.type) {
             case 'text':
-                return message.text;
+                return `<span>${message.text} <button class="read" title="Leer" onclick="synthesis.speak('${message.text}')"></button></span>`;
             case 'image':
                 return `<img src="${ message.url }" />`;
             default:

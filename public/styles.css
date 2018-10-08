@@ -82,7 +82,7 @@ body {
 .nav .default-nav .main-nav .toggle {
     height: 32px;
     width: 32px;
-    background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/104946/ic_arrow_back_white_48dp.png);
+    background: url(/public/icons/back.png);
     background-size: contain;
     margin: 16px;
     float: left;
@@ -93,7 +93,7 @@ body {
 .nav .default-nav .main-nav .options {
     height: 32px;
     width: 32px;
-    background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/104946/ic_more_vert_white_48dp.png);
+    background: url(/public/icons/more.png);
     background-size: contain;
     margin: 16px;
     position: absolute;
@@ -265,6 +265,22 @@ body {
     position: absolute;
     top: 0;
     right: -9px;
+}
+
+.message-wrapper .read {
+    border: none;
+    color: #ffffff;
+    height: 43px;
+    width: 35px;
+    position: absolute;
+    right: -45px;
+    background: #F44336 url(/public/icons/hearing.svg) no-repeat center;
+    top: 0;
+}
+
+.message-wrapper.me .read {
+    right: initial;
+    left: -45px;
 }
 
 @media (max-width: 560px) {
