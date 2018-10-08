@@ -23,13 +23,24 @@
                 <div class="content" id="content"></div>
             </div>
             <div class="bottom" id="bottom">
-                <textarea class="input" id="input"></textarea>
-                <div class="send" id="send"></div>
-                <div class="send infinite pulse" id="send-audio"></div>
+                <div class="action-bar">
+                    <div class="send infinite pulse" id="send-audio"></div>
+                    <div class="send" id="send-image"></div>
+                </div>
+                <div class="text-wrapper">
+                    <textarea class="input" id="input"></textarea>
+                    <div class="send" id="send"></div>
+                </div>
             </div>
         </div>
 
-        <!--<canvas id="image" width="640" height="480"></canvas>-->
+        <div class="modal" id="send-image-modal">
+            <button class="close">X</button>
+            <video id="video" autoplay></video>
+            <canvas id="canvas"></canvas>
+            <button class="button" id="take-picture">Tomar foto</button>
+            <button class="button" id="apply-filter">Aplicar filtro</button>
+        </div>
 
         <!--<div>-->
             <!--<span id="status">Connecting...</span>-->
@@ -53,12 +64,6 @@
         <!--<video id="pip-video" src="https://cdn.arnellebalane.com/videos/original-video.mp4" controls></video>-->
         <!--<button id="pip-button">Enter picture in picture</button>-->
 
-
-        <!--<video id="video" autoplay></video>-->
-        <!--<button id="getmediabutton">Get Media</button>-->
-        <!--<button id="startbutton" disabled="disabled">Take photo</button>-->
-        <!--<canvas id="canvas"></canvas>-->
-
         <!--<img hidden crossorigin="" id="image-shape" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Google_team_group_photo_with_Vanhanen.jpg/640px-Google_team_group_photo_with_Vanhanen.jpg" alt="">-->
         <!--<canvas id="canvas-shape" width="640" height="480"></canvas>-->
 
@@ -66,7 +71,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="/public/chat-frontend.js"></script>
         <!--<script src="/public/messages.js"></script>-->
-        <!--<script src="/public/capture-image.js"></script>-->
+        <script src="/public/capture-image.js"></script>
+        <script src="/public/wasm.js"></script>
         <!--<script src="/public/capture-audio.js"></script>-->
         <script src="/public/speech-recognition.js"></script>
         <!--<script src="/public/speech-synthesis.js"></script>-->
@@ -79,6 +85,5 @@
         <!--<script src="/public/wasm-filter.js"></script>-->
         <!--/comentado-->
 
-        <!--<script src="/public/wasm-example.js"></script>-->
     </body>
 </html>

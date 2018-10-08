@@ -16,18 +16,29 @@ const chat = (function () {
         scrollBottom();
     }
 
+    function buildMessageHTML(message) {
+        switch (message.type) {
+            case 'text':
+                return message.text;
+            case 'image':
+                return `<img src="${ message.url }" />`;
+            default:
+                return '';
+        }
+    }
+
     function buildHTML(message) {
         const authorClass = message.author === myName ? "me" : "them";
         const colorClass = message.color || 'admin';
 
         return `<div class="${'message-wrapper ' + authorClass + ' ' + colorClass }">
-            <div class="circle-wrapper animated bounceIn">A</div>
-            <div class="text-wrapper animated fadeIn">${ message.text }</div>
+            <div class="circle-wrapper animated bounceIn">${ message.author.charAt(0) }</div>
+            <div class="text-wrapper animated fadeIn">${ buildMessageHTML(message) }</div>
         </div>`;
     }
 
     function send(message) {
-        if (validate(message.text)) {
+        if (validate(message)) {
             message.time = new Date().getTime();
 
             connection.send(JSON.stringify(message));
@@ -38,13 +49,20 @@ const chat = (function () {
     }
 
     function receive(message) {
-        if (validate(message.text)) {
+        if (validate(message)) {
             onRecieve(message);
         }
     }
 
-    function validate(input) {
-        return input.length;
+    function validate(message) {
+        switch (message.type) {
+            case 'text':
+                return message.text.length;
+            case 'image':
+                return message.url;
+            default:
+                return false;
+        }
     }
 
     function sendMessage() {

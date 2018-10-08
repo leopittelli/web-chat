@@ -43,7 +43,7 @@ body {
 .wrapper .inner .content {
     padding: 11px;
     position: relative;
-    margin-bottom: 32px;
+    margin-bottom: 128px;
 }
 
 .nav {
@@ -128,15 +128,23 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 64px;
+    height: 128px;
     background: #ffffff;
 }
-.bottom .input {
+.bottom .action-bar {
+    background: #fafafa;
+    height: 64px;
+    position: relative;
+    width: 100%;
+}
+.bottom .text-wrapper {
+    position: relative;
+}
+.bottom .text-wrapper .input {
     height: 64px;
     background: #ffffff;
     border: none;
     width: 100%;
-    position: absolute;
     left: 0;
     top: 0;
     padding: 24px 64px 0 5%;
@@ -146,14 +154,14 @@ body {
     -ms-overflow-style: none;
     overflow: -moz-scrollbars-none;
 }
-.bottom .input:focus {
+.bottom .text-wrapper .input:focus {
     outline: none;
 }
-.bottom .input::-webkit-scrollbar {
+.bottom .text-wrapper .input::-webkit-scrollbar {
     width: 0 !important;
 }
 .bottom .send {
-    position: fixed;
+    position: absolute;
     height: 43px;
     width: 43px;
     border-radius: 50%;
@@ -170,7 +178,7 @@ body {
     cursor: pointer;
 }
 .bottom #send-audio {
-    bottom: 80px;
+    right: 60px;
 }
 .bottom #send-audio.animated {
     box-shadow: 0px 0px 4px 4px #ccc;
@@ -185,10 +193,13 @@ body {
     bottom: 0;
 }
 .bottom #send:before {
-background: url(/public/icons/send.svg) no-repeat center center;
+    background: url(/public/icons/send.svg) no-repeat center center;
 }
 .bottom #send-audio:before {
     background: url(/public/icons/mic.svg) no-repeat center center;
+}
+.bottom #send-image:before {
+    background: url(/public/icons/camera.svg) no-repeat center center;
 }
 
 .message-wrapper {
@@ -204,6 +215,7 @@ background: url(/public/icons/send.svg) no-repeat center center;
     height: 43px;
     line-height: 43px;
     text-align: center;
+    text-transform: uppercase;
     width: 43px;
 }
 .message-wrapper .text-wrapper {
@@ -217,6 +229,9 @@ background: url(/public/icons/send.svg) no-repeat center center;
     position: relative;
     word-break: break-all;
     opacity: 0;
+}
+.message-wrapper .text-wrapper img {
+    max-width: 100%;
 }
 .message-wrapper .text-wrapper:before {
     content: '';
@@ -443,4 +458,47 @@ background: url(/public/icons/send.svg) no-repeat center center;
     animation-duration: 0.5s;
     -webkit-animation-name: pulse;
     animation-name: pulse;
+}
+
+.button {
+    background: red;
+    border: none;
+    color: #ffffff;
+    padding: 12px;
+}
+
+#apply-filter {
+    display: none;
+}
+
+.modal {
+    background: #ffffff;
+    display: none;
+    height: 100%;
+    left: 0;
+    overflow: hidden;
+    padding-top: 40px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+.modal .close {
+    font-size: 20px;
+    height: 40px;
+    line-height: 40px;
+    right: 0;
+    position: absolute;
+    top: 0;
+    width: 40px;
+}
+
+#send-image-modal {
+    text-align: center;
+}
+#send-image-modal video {
+    display: none;
+}
+#send-image-modal canvas {
+    width: 100%;
+    margin-bottom: 20px;
 }

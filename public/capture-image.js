@@ -1,10 +1,14 @@
-(function() {
-
-    const video          = document.querySelector('#video'),
-        canvas         = document.querySelector('#canvas'),
-        getmediabutton = document.querySelector('#getmediabutton'),
-        startbutton    = document.querySelector('#startbutton');
+const captureImage = (function() {
+    const video             = document.querySelector('#video'),
+        canvas              = document.querySelector('#canvas'),
+        sendImageButton     = document.querySelector('#send-image'),
+        sendImageModal      = document.querySelector('#send-image-modal'),
+        takePictureButton   = document.querySelector('#take-picture');
+        closeModalButton    = document.querySelector('#send-image-modal .close');
     let ratio, width, height;
+
+    const emptyFilter = data => data;
+    let imageFilter = emptyFilter;
 
     function getMedia() {
         navigator.mediaDevices.getUserMedia({
@@ -12,33 +16,25 @@
         })
             .then(function(stream) {
                 video.srcObject = stream;
-                startbutton.removeAttribute('disabled');
+                sendImageModal.style.display = 'block';
             })
             .catch(function(error) {
                 console.log('error', error);
             });
     }
 
+    function closeModal() {
+        const track = video.srcObject.getTracks()[0];
+        track.stop();
+        sendImageModal.style.display = 'none';
+    }
+
     function takepicture() {
-        canvas.getContext('2d').drawImage(video, 0, 0, width, height);
+        closeModal();
         canvas.toBlob(function(blob) {
             const form = new FormData();
 
-            var numBytes = width * height * 4;
-            var ptr= Module.getMemory(numBytes);
-            var heapBytes= new Uint8Array(Module.HEAPU8.buffer, ptr, numBytes);
-
-            var ptrOut= Module.getMemory(numBytes);
-            var heapBytesOut= new Uint8Array(Module.HEAPU8.buffer, ptrOut, numBytes);
-
-            // copy data into heapBytes
-            heapBytes.set(new Uint8Array(blob.data));
-
-            Module._outline_c(heapBytes.byteOffset, heapBytesOut, width, height);
-            form.append('image', new Blob(heapBytesOut), 'newPhoto.png');
-
-            Module.memory(heapBytes.byteOffset);
-            Module._free(heapBytesOut.byteOffset);
+            form.append('image', blob, 'newPhoto.png');
 
             fetch('/images', {
                 method: 'POST',
@@ -48,15 +44,14 @@
                 if (response.status >= 200 && response.status <= 302) {
                     return response
                 } else {
-                    var error = new Error(response.statusText)
-                    error.response = response
+                    let error = new Error(response.statusText);
+                    error.response = response;
                     throw error
                 }
             })
             .then(response => response.json())
             .then((data) => {
-                console.log('request succeeded with JSON response', data)
-                connection.send(JSON.stringify({ type: "image", url: data.url}));
+                chat.send({ type: "image", url: data.url});
             })
             .catch((error) => {
                 console.log('ERROR', error)
@@ -64,26 +59,54 @@
         })
     }
 
+    function renderSource(source, destination) {
+        const context = destination.getContext('2d');
+        context.drawImage(source, 0, 0, destination.width, destination.height);
+
+        const imageData = context.getImageData(0, 0, destination.width, destination.height);
+        imageData.data.set(imageFilter(imageData));
+        context.putImageData(imageData, 0, 0);
+
+        requestAnimationFrame(_ => renderSource(source, destination));
+    }
+
     video.addEventListener('loadedmetadata', function() {
-        // Calculate the ratio of the video's width to height
+        // Seteamos las dimensiones del canvas respetando el aspect ratio del video
         ratio = video.videoWidth / video.videoHeight;
-        // Define the required width as the actual video's width
-        width = video.videoWidth - 1000;
-        // Calculate the height based on the video's width and the ratio
+        width = 640;
         height = parseInt(width / ratio, 10);
-        // Set the canvas width and height to the values just calculated
+
         canvas.width = width;
         canvas.height = height;
+
+        requestAnimationFrame(_ => renderSource(video, canvas));
     }, false);
 
-    getmediabutton.addEventListener('click', function(ev){
-        getMedia();
-        ev.preventDefault();
-    }, false);
-
-    startbutton.addEventListener('click', function(ev){
+    takePictureButton.addEventListener('click', function(ev){
         takepicture();
         ev.preventDefault();
     }, false);
 
+    sendImageButton.addEventListener('click', function(ev){
+        getMedia();
+        ev.preventDefault();
+    }, false);
+
+    closeModalButton.addEventListener('click', function(ev){
+        closeModal();
+        ev.preventDefault();
+    }, false);
+
+    function setFilter(filter) {
+        imageFilter = filter;
+    }
+
+    function removeFilter() {
+        imageFilter = emptyFilter;
+    }
+
+    return {
+        setFilter,
+        removeFilter
+    }
 })();
