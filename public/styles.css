@@ -290,6 +290,11 @@ body {
     background: #F44336 url(/public/icons/pip.svg) no-repeat center;
 }
 
+.message-wrapper .message-button.face {
+    background: #F44336 url(/public/icons/face.svg) no-repeat center;
+}
+
+
 @media (max-width: 560px) {
     .wrapper {
         width: 100%;
@@ -523,5 +528,10 @@ body {
 }
 #send-image-modal canvas {
     width: 100%;
-    margin-bottom: 20px;
+}
+#send-image-modal .button {
+    margin-top: 20px;
+}
+#canvas-shape {
+    display: none;
 }

@@ -1,7 +1,7 @@
 const synthesis = (function() {
 
     const synth = window.speechSynthesis;
-    const voiceSelect = document.querySelector('#voice-select');
+    const voiceSelect = document.getElementById('voice-select');
 
     let voices = [];
 

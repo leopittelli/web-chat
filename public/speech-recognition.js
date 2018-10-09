@@ -36,7 +36,7 @@
         console.log('Error: ' + event.error);
     };
 
-    const startButton = document.querySelector('#send-audio');
+    const startButton = document.getElementById('send-audio');
     let started = false;
     startButton.onclick = function () {
         if (started) recognition.stop();

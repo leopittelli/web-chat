@@ -1,9 +1,9 @@
 const captureImage = (function() {
-    const video             = document.querySelector('#video'),
-        canvas              = document.querySelector('#canvas'),
-        sendImageButton     = document.querySelector('#send-image'),
-        sendImageModal      = document.querySelector('#send-image-modal'),
-        takePictureButton   = document.querySelector('#take-picture');
+    const video             = document.getElementById('video'),
+        canvas              = document.getElementById('canvas'),
+        sendImageButton     = document.getElementById('send-image'),
+        sendImageModal      = document.getElementById('send-image-modal'),
+        takePictureButton   = document.getElementById('take-picture');
         closeModalButton    = document.querySelector('#send-image-modal .close');
     let ratio, width, height;
 

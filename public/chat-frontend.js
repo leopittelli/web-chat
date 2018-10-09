@@ -21,7 +21,7 @@ const chat = (function () {
             case 'text':
                 return `<span>${message.text} <button class="message-button read" title="Leer" onclick="synthesis.speak('${message.text}')"></button></span>`;
             case 'image':
-                return `<img src="${ message.url }" />`;
+                return `<img id="image-${ message.time }" src="${ message.url }" /> <button class="message-button face" title="Detectar caras" onclick="shape.detect('image-${ message.time }')"></button>`;
             case 'video':
                 return `<video id="video-${ message.time }" src="${ message.url }" controls/> <button class="message-button pip" title="Picture in picture" onclick="pip.toggle('video-${ message.time }')"></button>`;
             default:

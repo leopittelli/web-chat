@@ -11,7 +11,7 @@ const pip = (function() {
             chat.send({type: "text", text: "Este navegador no soporta web picture in picture", author: "admin"})
         }
 
-        const video = document.querySelector(`#${id}`);
+        const video = document.getElementById(id);
 
         if (activeVideo === video) {
             if (document.pictureInPictureElement) {

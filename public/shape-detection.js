@@ -1,48 +1,45 @@
 // chrome://flags/#enable-experimental-web-platform-features
 
-(function() {
+const shape = (function() {
+    const canvas = document.getElementById('canvas-shape');
 
-    var image = document.getElementById('image-shape');
-    var canvas = document.getElementById('canvas-shape');
-
-    var ctx = canvas.getContext('2d');
-    var scale = 1;
-
-    image.onload = function() {
-        ctx.drawImage(image,
-            0, 0, image.width, image.height,
-            0, 0, canvas.width, canvas.height);
-
-        scale = canvas.width / image.width;
-
-        detect();
-    };
-
-    function detect() {
-        if (window.FaceDetector == undefined) {
-            console.error('Face Detection not supported');
+    function detect(id) {
+        if (!window.FaceDetector) {
+            chat.send({type: "text", text: "Este navegador no soporta web face detection", author: "admin"})
             return;
         }
 
-        var faceDetector = new FaceDetector();
+        const image = document.getElementById(id);
+
+        const faceDetector = new FaceDetector();
         faceDetector.detect(image)
             .then(faces => {
-                // Draw the faces on the <canvas>.
-                var ctx = canvas.getContext('2d');
+                canvas.height = image.naturalHeight;
+                canvas.width = image.naturalWidth;
+
+                const ctx = canvas.getContext('2d');
+
+                ctx.drawImage(image,
+                    0, 0, canvas.width, canvas.height,
+                    0, 0, canvas.width, canvas.height);
+
                 ctx.lineWidth = 2;
                 ctx.strokeStyle = 'red';
                 for(let face of faces) {
                     face = face.boundingBox;
-                    ctx.rect(Math.floor(face.x * scale),
-                        Math.floor(face.y * scale),
-                        Math.floor(face.width * scale),
-                        Math.floor(face.height * scale));
+                    ctx.rect(face.x, face.y, face.width, face.height);
                     ctx.stroke();
                 }
+
+                image.src = canvas.toDataURL();
             })
             .catch((e) => {
-                console.error("Boo, Face Detection failed: " + e);
+                chat.send({type: "text", text: "Error detectando las caras", author: "admin"})
             });
+    }
+
+    return {
+        detect
     }
 
 })();

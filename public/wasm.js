@@ -1,5 +1,5 @@
 (function() {
-    const filterButton = document.querySelector('#apply-filter');
+    const filterButton = document.getElementById('apply-filter');
     let wasmModule;
     let filtering = false;
 
