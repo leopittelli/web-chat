@@ -23,7 +23,7 @@ const chat = (function () {
             case 'image':
                 return `<img src="${ message.url }" />`;
             case 'video':
-                return `<video id="video-${ message.time }" src="${ message.url }" controls/> <button class="message-button read" title="Picture in picture" onclick="pip.toggle('video-${ message.time }')"></button>`;
+                return `<video id="video-${ message.time }" src="${ message.url }" controls/> <button class="message-button pip" title="Picture in picture" onclick="pip.toggle('video-${ message.time }')"></button>`;
             default:
                 return '';
         }

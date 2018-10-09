@@ -267,20 +267,27 @@ body {
     right: -9px;
 }
 
-.message-wrapper .read {
+.message-wrapper .message-button {
     border: none;
     color: #ffffff;
     height: 43px;
     width: 35px;
     position: absolute;
     right: -45px;
-    background: #F44336 url(/public/icons/hearing.svg) no-repeat center;
     top: 0;
 }
 
-.message-wrapper.me .read {
+.message-wrapper.me .message-button {
     right: initial;
     left: -45px;
+}
+
+.message-wrapper .message-button.read {
+    background: #F44336 url(/public/icons/hearing.svg) no-repeat center;
+}
+
+.message-wrapper .message-button.pip {
+    background: #F44336 url(/public/icons/pip.svg) no-repeat center;
 }
 
 @media (max-width: 560px) {
