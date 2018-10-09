@@ -15,7 +15,7 @@
         for (let i = event.resultIndex; i !== results.length; ++i) {
             let result = results[i];
             // cuando el reconocimiento termina, se dispara un evento SpeechRecognitionEvent
-            // con un un resultado para el cual isFinal es true
+            // con un resultado para el cual isFinal es true
             if (result.isFinal) {
                 chat.send({ type: "speech", text: results[0][0].transcript});
                 recognition.stop();

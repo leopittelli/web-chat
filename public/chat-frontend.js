@@ -20,6 +20,8 @@ const chat = (function () {
         switch (message.type) {
             case 'text':
                 return `<span>${message.text} <button class="message-button read" title="Leer" onclick="synthesis.speak('${message.text}')"></button></span>`;
+            case 'speech':
+                return `<span>SPEECH: ${message.text} <button class="message-button read" title="Leer" onclick="synthesis.speak('${message.text}')"></button></span>`;
             case 'image':
                 return `<img id="image-${ message.time }" src="${ message.url }" /> <button class="message-button face" title="Detectar caras" onclick="shape.detect('image-${ message.time }')"></button>`;
             case 'video':
@@ -73,6 +75,8 @@ const chat = (function () {
                 return message.url.length;
             case 'video':
                 return message.url.length;
+            case 'speech':
+                return message.text.length;
             default:
                 return false;
         }
