@@ -4,10 +4,13 @@
 // http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
 const pip = (function() {
 
-    // button.hidden = !document.pictureInPictureEnabled;
     let activeVideo;
 
     function toggle(id){
+        if (!document.pictureInPictureEnabled) {
+            chat.send({type: "text", text: "Este navegador no soporta web picture in picture", author: "admin"})
+        }
+
         const video = document.querySelector(`#${id}`);
 
         if (activeVideo === video) {
