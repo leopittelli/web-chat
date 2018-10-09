@@ -230,7 +230,7 @@ body {
     word-break: break-all;
     opacity: 0;
 }
-.message-wrapper .text-wrapper img {
+.message-wrapper .text-wrapper img, .message-wrapper .text-wrapper video {
     max-width: 100%;
 }
 .message-wrapper .text-wrapper:before {

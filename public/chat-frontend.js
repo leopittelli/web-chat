@@ -19,9 +19,11 @@ const chat = (function () {
     function buildMessageHTML(message) {
         switch (message.type) {
             case 'text':
-                return `<span>${message.text} <button class="read" title="Leer" onclick="synthesis.speak('${message.text}')"></button></span>`;
+                return `<span>${message.text} <button class="message-button read" title="Leer" onclick="synthesis.speak('${message.text}')"></button></span>`;
             case 'image':
                 return `<img src="${ message.url }" />`;
+            case 'video':
+                return `<video id="video-${ message.time }" src="${ message.url }" controls/> <button class="message-button read" title="Picture in picture" onclick="pip.toggle('video-${ message.time }')"></button>`;
             default:
                 return '';
         }
@@ -37,9 +39,18 @@ const chat = (function () {
         </div>`;
     }
 
+    function checkIfVideoURL(text) {
+        return /^https?:\/\/[a-z\d-_\/.]*\.mp4$/i.test(text);
+    }
+
     function send(message) {
         if (validate(message)) {
             message.time = new Date().getTime();
+
+            if (checkIfVideoURL(message.text)) {
+                message.type = "video";
+                message.url = message.text;
+            }
 
             connection.send(JSON.stringify(message));
             if (!myName) {
@@ -59,7 +70,9 @@ const chat = (function () {
             case 'text':
                 return message.text.length;
             case 'image':
-                return message.url;
+                return message.url.length;
+            case 'video':
+                return message.url.length;
             default:
                 return false;
         }

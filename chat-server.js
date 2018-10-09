@@ -121,6 +121,9 @@ wsServer.on('request', function(request) {
                 if (messageData.type === "image") {
                     obj.url = messageData.url;
                     obj.type = 'image';
+                } else if (messageData.type === "video") {
+                    obj.url = messageData.url;
+                    obj.type = 'video';
                 } else if (messageData.type === "audio") {
                     obj.url = messageData.url;
                     obj.type = 'audio';
