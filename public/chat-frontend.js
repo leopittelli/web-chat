@@ -26,6 +26,8 @@ const chat = (function () {
                 return `<img id="image-${ message.time }" src="${ message.url }" /> <button class="message-button face" title="Detectar caras" onclick="shape.detect('image-${ message.time }')"></button>`;
             case 'video':
                 return `<video id="video-${ message.time }" src="${ message.url }" controls/> <button class="message-button pip" title="Picture in picture" onclick="pip.toggle('video-${ message.time }')"></button>`;
+            case 'audio':
+                return `<audio controls src="${ message.url }" />`;
             default:
                 return '';
         }
@@ -77,6 +79,8 @@ const chat = (function () {
                 return message.url.length;
             case 'speech':
                 return message.text.length;
+            case 'audio':
+                return message.url.length;
             default:
                 return false;
         }
@@ -164,35 +168,3 @@ const chat = (function () {
         receive
     }
 })();
-
-
-
-function handleMessage(message) {
-    const color = message.color;
-    const author = message.author;
-    const dt = new Date(message.time);
-
-    if (message.type === 'text') {
-        content.prepend('<p><span style="color:' + color + '">' + author + '</span> @ ' +
-            + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':'
-            + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes())
-            + ': ' + message.text + ' <button onclick="synthesis.speak(\''+message.text+'\')">LEER</button></p>');
-    } else if (message.type === 'image') {
-        content.prepend('<p><span style="color:' + color + '">' + author + '</span> @ ' +
-            + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':'
-            + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes())
-            + ': ' + '<img height="100" src="' + message.url + '" /></p>');
-    } else if (message.type === 'audio') {
-        content.prepend('<p><span style="color:' + color + '">' + author + '</span> @ ' +
-            + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':'
-            + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes())
-            + ': ' + '<audio controls src="' + message.url + '" /></p>');
-    } else if (message.type === 'speech') {
-        content.prepend('<p><span style="color:' + color + '">' + author + '</span> @ ' +
-            + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':'
-            + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes())
-            + ': SPEECH: ' + message.text + ' <button onclick="synthesis.speak(\''+message.text+'\')">LEER</button></p>');
-    } else {
-        console.log('Hmm..., I\'ve never seen message like this: ', message);
-    }
-}

@@ -13,7 +13,6 @@
             <nav class="nav" id="nav">
                 <div class="default-nav">
                     <div class="main-nav">
-                        <!--<div class="toggle"></div>-->
                         <div class="main-nav-item"><a class="main-nav-item-link" href="#">Web Chat</a></div>
                         <div class="options"></div>
                     </div>
@@ -24,7 +23,9 @@
             </div>
             <div class="bottom" id="bottom">
                 <div class="action-bar">
+                    <canvas id="audio-visualizer"></canvas>
                     <div class="send infinite pulse" id="send-audio"></div>
+                    <div class="send infinite pulse" id="speech"></div>
                     <div class="send" id="send-image"></div>
                 </div>
                 <div class="text-wrapper">
@@ -42,19 +43,6 @@
             <button class="button" id="apply-filter">Aplicar filtro</button>
         </div>
 
-
-        <!--<select name="" id="voice-select"></select>-->
-
-        <!--<section class="main-controls">-->
-            <!--<canvas class="visualizer" height="60px"></canvas>-->
-            <!--<div id="buttons">-->
-                <!--<button class="record">Record</button>-->
-                <!--<button class="stop">Stop</button>-->
-                <!--<button class="send">Send</button>-->
-            <!--</div>-->
-        <!--</section>-->
-
-
         <canvas id="canvas-shape" width="640" height="480"></canvas>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -62,7 +50,7 @@
         <!--<script src="/public/messages.js"></script>-->
         <script src="/public/capture-image.js"></script>
         <script src="/public/wasm.js"></script>
-        <!--<script src="/public/capture-audio.js"></script>-->
+        <script src="/public/capture-audio.js"></script>
         <script src="/public/speech-recognition.js"></script>
         <script src="/public/speech-synthesis.js"></script>
         <script src="/public/shape-detection.js"></script>

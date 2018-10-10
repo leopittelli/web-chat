@@ -79,17 +79,6 @@ body {
     list-style: none;
     transition: 0.3s ease;
 }
-.nav .default-nav .main-nav .toggle {
-    height: 32px;
-    width: 32px;
-    background: url(/public/icons/back.png);
-    background-size: contain;
-    margin: 16px;
-    float: left;
-}
-.nav .default-nav .main-nav .toggle:hover {
-    cursor: pointer;
-}
 .nav .default-nav .main-nav .options {
     height: 32px;
     width: 32px;
@@ -130,6 +119,7 @@ body {
     right: 0;
     height: 128px;
     background: #ffffff;
+    overflow: hidden;
 }
 .bottom .action-bar {
     background: #fafafa;
@@ -177,11 +167,14 @@ body {
 .bottom .send:hover {
     cursor: pointer;
 }
-.bottom #send-audio {
+.bottom #speech {
     right: 60px;
 }
-.bottom #send-audio.animated {
-    box-shadow: 0px 0px 4px 4px #ccc;
+.bottom #send-audio {
+    right: 110px;
+}
+.bottom #speech.animated, .bottom #send-audio.animated {
+    box-shadow: 0 0 4px 4px #ccc;
 }
 .bottom .send:before {
     content: '';
@@ -195,8 +188,11 @@ body {
 .bottom #send:before {
     background: url(/public/icons/send.svg) no-repeat center center;
 }
-.bottom #send-audio:before {
+.bottom #speech:before {
     background: url(/public/icons/mic.svg) no-repeat center center;
+}
+.bottom #send-audio:before {
+    background: url(/public/icons/record.svg) no-repeat center center;
 }
 .bottom #send-image:before {
     background: url(/public/icons/camera.svg) no-repeat center center;
@@ -230,7 +226,7 @@ body {
     word-break: break-all;
     opacity: 0;
 }
-.message-wrapper .text-wrapper img, .message-wrapper .text-wrapper video {
+.message-wrapper .text-wrapper img, .message-wrapper .text-wrapper video, .message-wrapper .text-wrapper audio {
     max-width: 100%;
 }
 .message-wrapper .text-wrapper:before {
@@ -294,6 +290,15 @@ body {
     background: #F44336 url(/public/icons/face.svg) no-repeat center;
 }
 
+#audio-visualizer {
+    display: none;
+    height: 100%;
+    margin: 0 10px;
+    width: 150px;
+}
+#audio-visualizer.show {
+    display: inline-block;
+}
 
 @media (max-width: 560px) {
     .wrapper {

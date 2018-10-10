@@ -22,7 +22,6 @@
                 startButton.classList.remove("animated");
             } else {
                 interimTranscript += result[0].transcript;
-                console.log('Interim transcript: ' + interimTranscript);
             }
         }
     };
@@ -36,7 +35,7 @@
         console.log('Error: ' + event.error);
     };
 
-    const startButton = document.getElementById('send-audio');
+    const startButton = document.getElementById('speech');
     let started = false;
     startButton.onclick = function () {
         if (started) recognition.stop();
