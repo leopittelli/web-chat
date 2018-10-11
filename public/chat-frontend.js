@@ -1,17 +1,17 @@
 const chat = (function () {
     let connection;
     let myName = false;
-    const content = $('#content');
-    const inner = $('#inner');
-    const input = $('#input');
-    const sendButton = $('#send');
+    const content = document.getElementById('content');
+    const inner = document.getElementById('inner');
+    const input = document.getElementById('input');
+    const sendButton = document.getElementById('send');
 
     function scrollBottom() {
-        inner[0].scrollTop = $(content).outerHeight(true);
+        inner.scrollTop = content.offsetHeight;
     }
 
     function onRecieve(message) {
-        content.append(buildHTML(message));
+        content.insertAdjacentHTML('beforeend', buildHTML(message));
 
         scrollBottom();
     }
@@ -87,21 +87,20 @@ const chat = (function () {
     }
 
     function sendMessage() {
-        let text = input.val();
-        send({type: "text", text: text});
+        send({type: "text", text: input.value});
 
-        input.val('');
+        input.value = '';
         input.focus();
     }
 
     function bindEvents() {
         input.focus();
 
-        sendButton.on('click', function(e) {
+        sendButton.addEventListener('click', function(e) {
             sendMessage();
         });
 
-        input.on('keydown', function(e) {
+        input.addEventListener('keydown', function(e) {
             let key = e.which || e.keyCode;
 
             if (key === 13) { // enter key
