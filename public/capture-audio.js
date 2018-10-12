@@ -3,7 +3,7 @@
     const button = document.getElementById('send-audio');
     const canvas = document.getElementById('audio-visualizer');
 
-    const audioCtx = new (window.AudioContext || webkitAudioContext)();
+    let audioCtx;
     const canvasCtx = canvas.getContext("2d");
     let isRecording = false;
     let chunks = [];
@@ -31,6 +31,10 @@
         };
 
         button.onclick = function() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || webkitAudioContext)();
+            }
+
             if (isRecording) {
                 mediaRecorder.stop();
                 mediaRecorder.stream.getTracks().forEach( track => track.stop() );
