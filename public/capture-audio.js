@@ -27,7 +27,7 @@
 
         const onError = function(err) {
             isRecording = false;
-            chat.send({type: "text", text: "Ocurrió un error", author: "admin"});
+            chat.notify("Ocurrió un error");
         };
 
         button.onclick = function() {
@@ -48,7 +48,7 @@
             isRecording = !isRecording;
         };
     } else {
-        chat.send({type: "text", text: "Este navegador no soporta getUserMedia", author: "admin"});
+        chat.notify("Este navegador no soporta getUserMedia");
     }
 
     function sendFile() {
@@ -74,7 +74,7 @@
                 chat.send({ type: "audio", url: data.url});
             })
             .catch((error) => {
-                chat.send({type: "text", text: 'Error enviando el audio', author: "admin"});
+                chat.notify('Error enviando el audio');
             });
 
         chunks = [];

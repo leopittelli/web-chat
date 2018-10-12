@@ -8,7 +8,7 @@ const pip = (function() {
 
     function toggle(id){
         if (!document.pictureInPictureEnabled) {
-            chat.send({type: "text", text: "Este navegador no soporta web picture in picture", author: "admin"})
+            chat.notify("Este navegador no soporta web picture in picture");
         }
 
         const video = document.getElementById(id);

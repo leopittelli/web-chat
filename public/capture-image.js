@@ -54,7 +54,7 @@ const captureImage = (function() {
                 chat.send({ type: "image", url: data.url});
             })
             .catch((error) => {
-                console.log('ERROR', error)
+                chat.notify("Error enviando la imagen");
             })
         })
     }

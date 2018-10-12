@@ -5,7 +5,7 @@ const shape = (function() {
 
     function detect(id) {
         if (!window.FaceDetector) {
-            chat.send({type: "text", text: "Este navegador no soporta web face detection", author: "admin"})
+            chat.notify("Este navegador no soporta web face detection");
             return;
         }
 
@@ -34,7 +34,7 @@ const shape = (function() {
                 image.src = canvas.toDataURL();
             })
             .catch((e) => {
-                chat.send({type: "text", text: "Error detectando las caras", author: "admin"})
+                chat.notify("Error detectando las caras");
             });
     }
 

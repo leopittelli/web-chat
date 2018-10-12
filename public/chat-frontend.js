@@ -1,5 +1,6 @@
 const chat = (function () {
     let connection;
+    let conectionError = false;
     let myName = false;
     const content = document.getElementById('content');
     const inner = document.getElementById('inner');
@@ -56,11 +57,19 @@ const chat = (function () {
                 message.url = message.text;
             }
 
-            connection.send(JSON.stringify(message));
-            if (!myName) {
-                myName = message.text;
+            if (conectionError) {
+                offlineStorage.save(message);
+            } else {
+                connection.send(JSON.stringify(message));
+                if (!myName) {
+                    myName = message.text;
+                }
             }
         }
+    }
+
+    function notify(text) {
+        receive({type: "text", text: text, author: "admin"});
     }
 
     function receive(message) {
@@ -86,7 +95,7 @@ const chat = (function () {
         }
     }
 
-    function sendMessage() {
+    function sendTextMessage() {
         send({type: "text", text: input.value});
 
         input.value = '';
@@ -97,7 +106,7 @@ const chat = (function () {
         input.focus();
 
         sendButton.addEventListener('click', function(e) {
-            sendMessage();
+            sendTextMessage();
         });
 
         input.addEventListener('keydown', function(e) {
@@ -106,7 +115,7 @@ const chat = (function () {
             if (key === 13) { // enter key
                 e.preventDefault();
 
-                sendMessage();
+                sendTextMessage();
             }
         });
     }
@@ -115,18 +124,18 @@ const chat = (function () {
         window.WebSocket = window.WebSocket || window.MozWebSocket;
 
         if (!window.WebSocket) {
-            onRecieve({type: "text", text: "Este navegador no soporta web sockets", author: "admin"});
+            notify("Este navegador no soporta web sockets");
             return;
         }
 
         connection = new WebSocket('ws://127.0.0.1:1337');
 
         connection.onopen = function () {
-            onRecieve({type: "text", text: 'Escribe tu nombre:', author: "admin"});
+            notify('Escribe tu nombre:');
         };
 
         connection.onerror = function (error) {
-            onRecieve({type: "text", text: 'Error de conexión', author: "admin"});
+            notify('Error de conexión');
         };
 
         connection.onmessage = function (message) {
@@ -149,10 +158,9 @@ const chat = (function () {
 
         bindEvents();
 
-        let conectionError = false;
         setInterval(function() {
             if (connection.readyState !== 1) {
-                if (!conectionError) onRecieve({type: "text", text: 'Error de conexión', author: "admin"});
+                if (!conectionError) notify('Error de conexión');
                 conectionError = true;
             } else {
                 conectionError = false;
@@ -164,6 +172,6 @@ const chat = (function () {
 
     return {
         send,
-        receive
+        notify
     }
 })();
