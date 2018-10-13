@@ -79,18 +79,6 @@ body {
     list-style: none;
     transition: 0.3s ease;
 }
-.nav .default-nav .main-nav .options {
-    height: 32px;
-    width: 32px;
-    background: url(/public/icons/more.png);
-    background-size: contain;
-    margin: 16px;
-    position: absolute;
-    right: 0;
-}
-.nav .default-nav .main-nav .options:hover {
-    cursor: pointer;
-}
 .nav .default-nav .main-nav .main-nav-item {
     float: left;
     height: 64px;
