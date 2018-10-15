@@ -1,44 +1,31 @@
-// http://ejohn.org/blog/ecmascript-5-strict-mode-json-and-more/
 "use strict";
 
-// Optional. You will see this name in eg. 'ps' or 'top' command
-process.title = 'node-chat';
+const path = require("path");
+const webSocketServer = require('websocket').server;
+const express = require('express');
+const multer  = require('multer');
+const imageUploads = multer({ dest: 'uploads/images/' });
+const audioUploads = multer({ dest: 'uploads/audios/' });
+const app = express();
 
-// Port where we'll run the websocket server
-var webSocketsServerPort = 1337;
+// Puerto donde va a correr el servidor de websocket
+const webSocketsServerPort = 1337;
 
-
-var path = require("path");
-var webSocketServer = require('websocket').server;
-var express = require('express');
-var multer  = require('multer');
-var imageUploads = multer({ dest: 'uploads/images/' });
-var audioUploads = multer({ dest: 'uploads/audios/' });
-var app = express();
-
-/**
- * Global variables
- */
-// latest 100 messages
-var history = [];
-// list of currently connected clients (users)
-var clients = [];
+// Almacenamiento en memoria de mensajes
+let history = [];
+// Lista de clientes conectados
+let clients = [];
 
 /**
- * Helper function for escaping input strings
+ * Helper para escapear textos
  */
 function htmlEntities(str) {
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;')
                       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-// Array with some colors
-var colors = [ 'red', 'green', 'blue', 'magenta', 'purple', 'plum', 'orange' ];
-// ... in random order
-colors.sort(function(a,b) { return Math.random() > 0.5; } );
-
 /**
- * HTTP server
+ * Servidor HTTP
  */
 app.use('/public', express.static(path.join(__dirname, 'public')));
 express.static.mime.define({'application/wasm': ['wasm']});
@@ -60,76 +47,61 @@ app.post('/audios', audioUploads.single('audio'), function (req, res, next) {
 });
 
 const server = app.listen(webSocketsServerPort, function() {
-    console.log((new Date()) + " Server is listening on port " + webSocketsServerPort);
+    console.log((new Date()) + " Servidor escuchando en el puerto " + webSocketsServerPort);
 });
 
 /**
- * WebSocket server
+ * Servidor WebSocket
  */
-var wsServer = new webSocketServer({
-    // WebSocket server is tied to a HTTP server. WebSocket request is just
-    // an enhanced HTTP request. For more info http://tools.ietf.org/html/rfc6455#page-6
+const wsServer = new webSocketServer({
+    // El server de WebSocket se crea relacionado a un server HTTP.
     httpServer: server
 });
 
-// This callback function is called every time someone
-// tries to connect to the WebSocket server
+// Este callback se ejecuta cada vez que alguien se conecta al servidor de WebSockets
 wsServer.on('request', function(request) {
-    console.log((new Date()) + ' Connection from origin ' + request.origin + '.');
+    console.log((new Date()) + ' Conexión desde el origen: ' + request.origin + '.');
 
-    // accept connection - you should check 'request.origin' to make sure that
-    // client is connecting from your website
-    // (http://en.wikipedia.org/wiki/Same_origin_policy)
-    var connection = request.accept(null, request.origin);
-    // we need to know client index to remove them on 'close' event
-    var index = clients.push(connection) - 1;
-    var userName = false;
-    var userColor = false;
+    // Aceptamos la conexión - Deberíamos validar el 'request.origin' para asegurar
+    // que el cliente se esté conectando desde nuestro sitio (http://en.wikipedia.org/wiki/Same_origin_policy)
+    const connection = request.accept(null, request.origin);
+    // Guardamos el cliente para removerlo cuando se desconecte
+    const index = clients.push(connection) - 1;
+    let userName = false;
 
-    console.log((new Date()) + ' Connection accepted.');
+    console.log((new Date()) + ' Conexión aceptada.');
 
-    // send back chat history
+    // Mandamos el historial de mensajes
     if (history.length > 0) {
         connection.sendUTF(JSON.stringify( { type: 'history', data: history} ));
     }
 
-    // user sent some message
+    // Un usuario manda un mensaje
     connection.on('message', function(message) {
-        if (message.type === 'utf8') { // accept only text
+        if (message.type === 'utf8') { // Aceptamos solo texto
             const messageData = JSON.parse(message.utf8Data);
 
-            if (userName === false) { // first message sent by user is their name
-                // remember user name
+            if (userName === false) { // Usamos el primer mensaje como nombre del usuario
                 userName = htmlEntities(messageData.text);
-                // get random color and send it back to the user
-                userColor = colors.shift();
-                connection.sendUTF(JSON.stringify({ type:'color', data: { color: userColor, text: userName, author: userName } }));
-                console.log((new Date()) + ' User is known as: ' + userName
-                            + ' with ' + userColor + ' color.');
+                console.log((new Date()) + ' Usuario conocido como: ' + userName);
 
-            } else { // log and broadcast the message
-                console.log((new Date()) + ' Received Message from '
-                            + userName + ': ' + messageData);
+            } else { // Guardamos el mensaje y se lo mandamos a todos los usuarios
+                console.log((new Date()) + ' Mensaje recibido de: ' + userName + ': ' + messageData);
 
-                // we want to keep history of all sent messages
-                var obj = {
+                const obj = {
                     time: (new Date()).getTime(),
                     author: userName,
-                    color: userColor
+                    type: messageData.type
                 };
 
                 if (messageData.type === "image") {
                     obj.url = messageData.url;
-                    obj.type = 'image';
                 } else if (messageData.type === "video") {
                     obj.url = messageData.url;
-                    obj.type = 'video';
                 } else if (messageData.type === "audio") {
                     obj.url = messageData.url;
-                    obj.type = 'audio';
                 } else if (messageData.type === "speech") {
                     obj.text = messageData.text;
-                    obj.type = 'speech';
                 } else {
                     obj.text = htmlEntities(messageData.text);
                     obj.type = 'text';
@@ -138,24 +110,21 @@ wsServer.on('request', function(request) {
                 history.push(obj);
                 history = history.slice(-100);
 
-                // broadcast message to all connected clients
-                var json = JSON.stringify({ type: 'message', data: obj });
-                for (var i=0; i < clients.length; i++) {
+                // Mandamos el mensaje a todos los clientes conectados
+                const json = JSON.stringify({ type: 'message', data: obj });
+                for (let i=0; i < clients.length; i++) {
                     clients[i].sendUTF(json);
                 }
             }
         }
     });
 
-    // user disconnected
+    // Se desconecta el usuario
     connection.on('close', function(connection) {
-        if (userName !== false && userColor !== false) {
-            console.log((new Date()) + " Peer "
-                + connection.remoteAddress + " disconnected.");
-            // remove user from the list of connected clients
+        if (userName !== false) {
+            console.log((new Date()) + " Usuario " + connection.remoteAddress + " desconectado.");
+            // Lo removemos de la lista de usuarios conectados
             clients.splice(index, 1);
-            // push back user's color to be reused by another user
-            colors.push(userColor);
         }
     });
 

@@ -6,6 +6,7 @@ const chat = (function () {
     const inner = document.getElementById('inner');
     const input = document.getElementById('input');
     const sendButton = document.getElementById('send');
+    const mainTitle = document.getElementById('main-title');
 
     function scrollBottom() {
         inner.scrollTop = content.offsetHeight;
@@ -36,9 +37,8 @@ const chat = (function () {
 
     function buildHTML(message) {
         const authorClass = message.author === myName ? "me" : "them";
-        const colorClass = message.color || 'admin';
 
-        return `<div class="${'message-wrapper ' + authorClass + ' ' + colorClass }">
+        return `<div class="${'message-wrapper ' + authorClass }">
             <div class="circle-wrapper animated bounceIn">${ message.author.charAt(0) }</div>
             <div class="text-wrapper animated fadeIn">${ buildMessageHTML(message) }</div>
         </div>`;
@@ -63,6 +63,7 @@ const chat = (function () {
                 connection.send(JSON.stringify(message));
                 if (!myName) {
                     myName = message.text;
+                    mainTitle.textContent = myName;
                 }
             }
         }

@@ -3,7 +3,7 @@ const captureImage = (function() {
         canvas              = document.getElementById('canvas'),
         sendImageButton     = document.getElementById('send-image'),
         sendImageModal      = document.getElementById('send-image-modal'),
-        takePictureButton   = document.getElementById('take-picture');
+        takePictureButton   = document.getElementById('take-picture'),
         closeModalButton    = document.querySelector('#send-image-modal .close');
     let ratio, width, height;
 
