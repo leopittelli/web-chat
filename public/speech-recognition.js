@@ -1,7 +1,6 @@
 (function() {
 
-    window.SpeechRecognition = window.SpeechRecognition ||
-        window.webkitSpeechRecognition;
+    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
     recognition.continuous = true;
     recognition.interimResults = true;
@@ -38,10 +37,14 @@
     const startButton = document.getElementById('speech');
     let started = false;
     startButton.onclick = function () {
-        if (started) recognition.stop();
-        else recognition.start();
+        if (started) {
+            recognition.stop();
+            startButton.classList.remove("animated");
+        } else {
+            recognition.start();
+            startButton.classList.add("animated");
+        }
         started = !started;
-        startButton.classList.add("animated");
     };
 
 })();
