@@ -1,4 +1,5 @@
 const offlineStorage = (function() {
+    const button = document.getElementById("upload-messages-icon");
     const request = window.indexedDB.open("web-chat", 1);
 
     let db;
@@ -8,6 +9,13 @@ const offlineStorage = (function() {
     };
     request.onsuccess = function(event) {
         db = request.result;
+
+        const count = db.transaction("messages", "readonly").objectStore("messages").count();
+        count.onsuccess = function(e) {
+            if (count.result > 0) {
+                button.style.display = "block";
+            }
+        };
     };
 
     request.onupgradeneeded = function(event) {
@@ -27,6 +35,7 @@ const offlineStorage = (function() {
 
         const request = objectStore.add(message);
         request.onsuccess = function(event) {
+            button.style.display = "block";
             chat.notify("Mensaje almacenado correctamente");
         };
     };
@@ -43,6 +52,8 @@ const offlineStorage = (function() {
                 request.onsuccess = function() {
                     cursor.continue();
                 };
+            } else {
+                button.style.display = "none";
             }
         };
     };
