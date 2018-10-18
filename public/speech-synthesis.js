@@ -32,6 +32,7 @@ const synthesis = (function() {
 
     function speak(text) {
         const utterThis = new SpeechSynthesisUtterance(text);
+        utterThis.lang = "es";
         // utterThis.voice = voices[voiceSelect.value];
         synth.speak(utterThis);
     }
